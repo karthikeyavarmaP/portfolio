@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Responsive jewellery storefront UI demo with search, filtering, sorting, wishlist and cart interactions.">
+<meta name="theme-color" content="#18231f">
+<title>Gemora — Jewellery Store UI Demo</title>
+<style>
+:root{--ink:#20221f;--muted:#6d716a;--line:#e8e4dc;--paper:#faf8f4;--card:#fff;--accent:#8a633e;--soft:#f1e9df;--green:#2d5a47}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.6 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select{font:inherit}button,a{touch-action:manipulation}a{color:inherit}.wrap{width:min(1120px,92%);margin:auto}.nav{display:flex;justify-content:space-between;align-items:center;padding:22px 0;border-bottom:1px solid var(--line)}.logo{font-size:1.35rem;font-weight:850;letter-spacing:-.06em;text-decoration:none}.logo span{color:var(--accent)}.navright{display:flex;gap:12px;align-items:center}.pill{border:1px solid var(--line);background:white;border-radius:999px;padding:8px 13px}.hero{padding:54px 0 35px;display:grid;grid-template-columns:1.2fr .8fr;gap:30px;align-items:center}.eyebrow{text-transform:uppercase;letter-spacing:.15em;font-size:.75rem;color:var(--accent);font-weight:800}.hero h1{font-size:clamp(2.5rem,6vw,4.5rem);line-height:1.02;letter-spacing:-.07em;margin:12px 0}.hero p{color:var(--muted);max-width:550px}.heroart{min-height:220px;border-radius:22px;background:radial-gradient(circle at 50% 35%,#fff7e9 0 12%,transparent 13%),linear-gradient(135deg,#e8d7bf,#f8efe3 55%,#d5b78e);display:grid;place-items:center;color:#805b35;font-size:4rem}.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:20px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.toolbar input{flex:1;min-width:180px}.toolbar input,.toolbar select{border:1px solid var(--line);border-radius:10px;background:white;padding:11px 12px;color:var(--ink)}.count{margin-left:auto;color:var(--muted);font-size:.9rem}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;padding:24px 0 50px}.product{background:var(--card);border:1px solid var(--line);border-radius:17px;overflow:hidden}.visual{height:180px;display:grid;place-items:center;font-size:3.6rem;background:linear-gradient(140deg,#f0e7db,#fbf7f0)}.visual.gold{background:linear-gradient(140deg,#ead7b1,#fbf1dc)}.visual.rose{background:linear-gradient(140deg,#f1dcd5,#fbf0ec)}.details{padding:17px}.category{font-size:.73rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-weight:800}.details h3{margin:6px 0;font-size:1.05rem}.details p{margin:0;color:var(--muted);font-size:.9rem}.price-row{display:flex;align-items:center;justify-content:space-between;margin-top:16px;gap:8px}.price{font-weight:850}.actions{display:flex;gap:8px;margin-top:13px}.actions button{flex:1;border:1px solid var(--line);background:white;border-radius:9px;padding:9px;cursor:pointer}.actions .add{background:var(--ink);color:white;border-color:var(--ink)}button:hover{filter:brightness(.95)}button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #c9a57e;outline-offset:3px}.empty{grid-column:1/-1;padding:45px;text-align:center;color:var(--muted);background:white;border-radius:15px}.foot{border-top:1px solid var(--line);padding:24px 0 35px;color:var(--muted);font-size:.86rem}.notice{margin:18px 0 0;background:var(--soft);border-radius:12px;padding:12px 15px;color:#684c30;font-size:.9rem}
+@media(max-width:720px){.hero{grid-template-columns:1fr;padding-top:35px}.heroart{min-height:150px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.visual{height:140px}.count{width:100%;margin:0}}@media(max-width:460px){.grid{grid-template-columns:1fr}.visual{height:165px}.navright{gap:6px}.pill{padding:7px 9px}}
+</style>
+</head>
+<body>
+<header class="wrap nav"><a class="logo" href="./index.html">Gemora<span>.</span></a><div class="navright"><span class="pill" id="wishlist-count">♡ Wishlist 0</span><span class="pill" id="cart-count">Bag 0</span></div></header>
+<main class="wrap">
+<section class="hero"><div><div class="eyebrow">Frontend case study · Demo storefront</div><h1>Find a piece<br>that feels like you.</h1><p>A responsive jewellery discovery interface demonstrating product browsing, search, category filtering, sorting, wishlist and cart interactions. Sample products and prices are for demonstration only.</p></div><div class="heroart" aria-hidden="true">✧ ◇ ✧</div></section>
+<div class="toolbar" aria-label="Product controls"><input id="search" type="search" placeholder="Search jewellery…" aria-label="Search products"><select id="category" aria-label="Filter by category"><option value="all">All categories</option><option value="Rings">Rings</option><option value="Necklaces">Necklaces</option><option value="Earrings">Earrings</option><option value="Bracelets">Bracelets</option></select><select id="sort" aria-label="Sort products"><option value="featured">Featured</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option><option value="name">Name: A to Z</option></select><span class="count" id="result-count" aria-live="polite">6 products</span></div>
+<div class="notice" id="notice" role="status">Interactive demo — no real purchases or payments are processed.</div>
+<section class="grid" id="products" aria-label="Products"></section>
+</main><footer class="wrap foot"><a href="./index.html">← Back to portfolio</a> · Built with HTML, CSS and vanilla JavaScript · Demo data only</footer>
+<script>
+(() => {
+ const products=[
+  {id:1,name:"Solitaire Glow Ring",category:"Rings",price:6499,icon:"◇",tone:"gold",desc:"A minimal statement for everyday wear."},
+  {id:2,name:"Luna Pendant Necklace",category:"Necklaces",price:4299,icon:"✧",tone:"rose",desc:"A delicate pendant with a clean silhouette."},
+  {id:3,name:"Petal Drop Earrings",category:"Earrings",price:3599,icon:"❋",tone:"",desc:"Lightweight style with a floral detail."},
+  {id:4,name:"Classic Gold Band",category:"Rings",price:5299,icon:"◯",tone:"gold",desc:"An understated, timeless band."},
+  {id:5,name:"Everyday Charm Bracelet",category:"Bracelets",price:2899,icon:"⌁",tone:"rose",desc:"A versatile accent for layered looks."},
+  {id:6,name:"Celeste Stud Earrings",category:"Earrings",price:2199,icon:"✦",tone:"",desc:"Simple studs made for daily styling."}
+ ];
+ const $=s=>document.querySelector(s);
+ let wishlist=new Set(JSON.parse(localStorage.getItem("gemora.wishlist")||"[]"));
+ let cart=JSON.parse(localStorage.getItem("gemora.cart")||"[]");
+ function money(n){return "₹"+n.toLocaleString("en-IN")}
+ function note(message){$("#notice").textContent=message}
+ function persist(){try{localStorage.setItem("gemora.wishlist",JSON.stringify([...wishlist]));localStorage.setItem("gemora.cart",JSON.stringify(cart))}catch{}}
+ function render(){
+  let items=products.filter(p=>(p.name+" "+p.category+" "+p.desc).toLowerCase().includes($("#search").value.toLowerCase().trim())&&($("#category").value==="all"||p.category===$("#category").value));
+  const sort=$("#sort").value;
+  if(sort==="low")items.sort((a,b)=>a.price-b.price);if(sort==="high")items.sort((a,b)=>b.price-a.price);if(sort==="name")items.sort((a,b)=>a.name.localeCompare(b.name));
+  $("#result-count").textContent=items.length+" product"+(items.length===1?"":"s");
+  $("#products").replaceChildren();
+  if(!items.length){const e=document.createElement("p");e.className="empty";e.textContent="No products match your search. Try another term or category.";$("#products").append(e)}
+  items.forEach(p=>{
+   const card=document.createElement("article");card.className="product";
+   const visual=document.createElement("div");visual.className="visual "+p.tone;visual.setAttribute("aria-hidden","true");visual.textContent=p.icon;
+   const details=document.createElement("div");details.className="details";
+   const category=document.createElement("div");category.className="category";category.textContent=p.category;
+   const title=document.createElement("h3");title.textContent=p.name;
+   const desc=document.createElement("p");desc.textContent=p.desc;
+   const row=document.createElement("div");row.className="price-row";
+   const price=document.createElement("span");price.className="price";price.textContent=money(p.price);
+   const actions=document.createElement("div");actions.className="actions";
+   const wish=document.createElement("button");wish.type="button";wish.textContent=wishlist.has(p.id)?"♥ Saved":"♡ Wishlist";wish.setAttribute("aria-pressed",String(wishlist.has(p.id)));wish.addEventListener("click",()=>{wishlist.has(p.id)?wishlist.delete(p.id):wishlist.add(p.id);persist();render();note(wishlist.has(p.id)?"Added to wishlist.":"Removed from wishlist.")});
+   const add=document.createElement("button");add.type="button";add.className="add";add.textContent="Add to bag";add.addEventListener("click",()=>{cart.push(p.id);persist();updateCounts();note(p.name+" added to your demo bag.")});
+   row.append(price);actions.append(wish,add);details.append(category,title,desc,row,actions);card.append(visual,details);$("#products").append(card)
+  });
+  updateCounts()
+ }
+ function updateCounts(){$("#wishlist-count").textContent="♡ Wishlist "+wishlist.size;$("#cart-count").textContent="Bag "+cart.length}
+ $("#search").addEventListener("input",render);$("#category").addEventListener("change",render);$("#sort").addEventListener("change",render);
+ render();
+})();
+</script>
+</body></html>
